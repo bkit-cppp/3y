@@ -650,13 +650,14 @@ function setScene(index) {
 }
 
 function computeCameraTargets(elapsedTime) {
+  const isPortrait = window.innerWidth < window.innerHeight;
   if (currentSceneIndex === 0) {
     // Slow cinematic orbit around the entire 3D universe
     const orbitAngle = elapsedTime * 0.18 + userYawOffset;
-    const radius = 20.5;
+    const radius = isPortrait ? 27.0 : 20.5;
     targetCameraPos.set(
       Math.sin(orbitAngle) * radius,
-      5.2 + Math.sin(elapsedTime * 0.4) * 1.2 + userPitchOffset * 4,
+      (isPortrait ? 6.2 : 5.2) + Math.sin(elapsedTime * 0.4) * 1.2 + userPitchOffset * 4,
       Math.cos(orbitAngle) * radius
     );
     targetLookAt.set(0, 1.3, 0);
@@ -665,18 +666,18 @@ function computeCameraTargets(elapsedTime) {
     const anchor = frameAnchors[currentSceneIndex - 1];
     if (anchor) {
       const worldAngle = anchor.angle + photoFramesGroup.rotation.y + userYawOffset * 0.5;
-      const camDist = RING_RADIUS + 5.6;
+      const camDist = isPortrait ? RING_RADIUS + 8.6 : RING_RADIUS + 5.6;
       const subtleSway = Math.sin(elapsedTime * 0.9) * 0.35;
 
       targetCameraPos.set(
         Math.sin(worldAngle + subtleSway * 0.04) * camDist,
-        anchor.baseY + 0.15 + userPitchOffset * 2.5,
+        anchor.baseY + (isPortrait ? 0.05 : 0.15) + userPitchOffset * 2.5,
         Math.cos(worldAngle + subtleSway * 0.04) * camDist
       );
 
       targetLookAt.set(
         Math.sin(anchor.angle + photoFramesGroup.rotation.y) * RING_RADIUS,
-        anchor.baseY + 0.1,
+        anchor.baseY + (isPortrait ? 0.0 : 0.1),
         Math.cos(anchor.angle + photoFramesGroup.rotation.y) * RING_RADIUS
       );
     }

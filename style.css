@@ -15,11 +15,13 @@
   padding: 0;
   box-sizing: border-box;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body, html {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   overflow: hidden;
   background-color: var(--bg-dark);
   font-family: 'Montserrat', 'Segoe UI', sans-serif;
@@ -31,6 +33,7 @@ body, html {
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 1;
 }
 
@@ -61,11 +64,13 @@ body.pyramid-active .hud-layer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: radial-gradient(circle at center, rgba(26, 6, 48, 0.92) 0%, rgba(3, 1, 8, 0.98) 100%);
   backdrop-filter: blur(18px);
   transition: opacity 1.2s ease, visibility 1.2s ease;
-  padding: 24px;
+  padding: 24px 20px;
   text-align: center;
 }
 
@@ -79,101 +84,108 @@ body.pyramid-active .hud-layer {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 18px;
+  padding: 6px 16px;
   border-radius: 999px;
   background: rgba(0, 242, 254, 0.12);
   border: 1px solid rgba(0, 242, 254, 0.4);
   color: var(--cyan);
-  font-size: 0.8rem;
-  letter-spacing: 3px;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+  flex-shrink: 0;
 }
 
 .intro-title {
   font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  font-size: clamp(2rem, 5.5vw, 4.4rem);
   font-weight: 700;
   background: linear-gradient(135deg, #ffffff 0%, #ff85c0 45%, #00f2fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 40px rgba(255, 42, 133, 0.35);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   line-height: 1.15;
+  flex-shrink: 0;
 }
 
 .intro-subtitle {
-  font-size: clamp(0.95rem, 2vw, 1.2rem);
-  color: rgba(255, 245, 249, 0.8);
-  max-width: 560px;
-  line-height: 1.6;
-  margin-bottom: 36px;
+  font-size: clamp(0.88rem, 2vw, 1.15rem);
+  color: rgba(255, 245, 249, 0.82);
+  max-width: 540px;
+  line-height: 1.55;
+  margin-bottom: 24px;
+  flex-shrink: 0;
 }
 
 .intro-stats {
-  display: flex;
-  gap: 18px;
-  margin-bottom: 38px;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(105px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+  width: 100%;
+  max-width: 560px;
+  flex-shrink: 0;
 }
 
 .stat-box {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 14px 22px;
-  min-width: 110px;
+  border-radius: 14px;
+  padding: 12px 14px;
   backdrop-filter: blur(10px);
 }
 
 .stat-num {
-  font-size: 1.8rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: var(--gold);
   text-shadow: 0 0 15px rgba(255, 209, 102, 0.5);
 }
 
 .stat-label {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 1.2px;
+  color: rgba(255, 255, 255, 0.7);
   margin-top: 4px;
 }
 
 .start-btn {
   position: relative;
-  padding: 16px 42px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: 2px;
+  flex-shrink: 0;
+  padding: 15px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #fff;
   background: linear-gradient(135deg, #ff2a85 0%, #8a2be2 55%, #00c6ff 100%);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 0 30px rgba(255, 42, 133, 0.55), 0 0 60px rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 30px rgba(255, 42, 133, 0.65), 0 0 60px rgba(0, 242, 254, 0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.start-btn:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 0 45px rgba(255, 42, 133, 0.85), 0 0 80px rgba(0, 242, 254, 0.55);
+.start-btn:hover,
+.start-btn:active {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 45px rgba(255, 42, 133, 0.9), 0 0 80px rgba(0, 242, 254, 0.6);
 }
 
 /* HUD Layer */
 .hud-layer {
   position: fixed;
   inset: 0;
+  height: 100dvh;
   z-index: 10;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 22px 28px;
+  padding: 18px 24px calc(18px + env(safe-area-inset-bottom, 0px));
   transition: opacity 0.5s ease;
 }
 
@@ -181,7 +193,7 @@ body.pyramid-active .hud-layer {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -190,51 +202,52 @@ body.pyramid-active .hud-layer {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-left: 3px solid var(--cyan);
-  padding: 12px 20px;
+  padding: 10px 16px;
   border-radius: 14px;
   backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
 .brand-tag {
-  font-size: 0.7rem;
-  letter-spacing: 2.5px;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--cyan);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .brand-title {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #fff;
 }
 
 .live-timer {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   color: var(--gold);
-  margin-top: 3px;
+  margin-top: 2px;
   font-variant-numeric: tabular-nums;
 }
 
 .hud-controls {
   pointer-events: auto;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .hud-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
   border-radius: 12px;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: #fff;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   backdrop-filter: blur(12px);
@@ -246,7 +259,6 @@ body.pyramid-active .hud-layer {
   background: rgba(255, 42, 133, 0.28);
   border-color: var(--primary);
   box-shadow: 0 0 20px rgba(255, 42, 133, 0.4);
-  transform: translateY(-1px);
 }
 
 .hud-btn.cyan-btn:hover,
@@ -261,18 +273,18 @@ body.pyramid-active .hud-layer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .cinematic-caption-box {
   pointer-events: auto;
-  max-width: 680px;
+  max-width: 660px;
   width: 100%;
-  background: linear-gradient(180deg, rgba(16, 6, 32, 0.75) 0%, rgba(8, 2, 18, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(16, 6, 32, 0.78) 0%, rgba(8, 2, 18, 0.92) 100%);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-top: 2px solid var(--primary);
-  border-radius: 18px;
-  padding: 18px 28px;
+  border-radius: 16px;
+  padding: 14px 22px;
   text-align: center;
   backdrop-filter: blur(14px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), 0 0 30px rgba(255, 42, 133, 0.15);
@@ -281,25 +293,25 @@ body.pyramid-active .hud-layer {
 
 .chapter-pill {
   display: inline-block;
-  font-size: 0.72rem;
-  letter-spacing: 2.5px;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--cyan);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .caption-heading {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  font-size: clamp(1.2rem, 2.6vw, 1.75rem);
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .caption-text {
-  font-size: clamp(0.88rem, 1.6vw, 1rem);
+  font-size: clamp(0.82rem, 1.5vw, 0.96rem);
   color: rgba(255, 240, 248, 0.88);
-  line-height: 1.55;
+  line-height: 1.45;
 }
 
 /* Timeline Dots */
@@ -307,22 +319,22 @@ body.pyramid-active .hud-layer {
   pointer-events: auto;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: var(--glass-bg);
-  padding: 8px 18px;
+  padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(12px);
 }
 
 .scene-dot {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.25);
   background: rgba(255, 255, 255, 0.06);
   color: #fff;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -331,22 +343,18 @@ body.pyramid-active .hud-layer {
   justify-content: center;
 }
 
-.scene-dot:hover {
-  border-color: var(--cyan);
-  color: var(--cyan);
-}
-
 .scene-dot.active {
   background: linear-gradient(135deg, var(--primary), #8a2be2);
   border-color: #fff;
   box-shadow: 0 0 15px var(--primary-glow);
-  transform: scale(1.12);
+  transform: scale(1.1);
 }
 
 /* Pyramid Hologram Floating Controls */
 .pyramid-hud {
   position: fixed;
   inset: 0;
+  height: 100dvh;
   z-index: 30;
   pointer-events: none;
   display: none;
@@ -356,13 +364,12 @@ body.pyramid-active .pyramid-hud {
   display: block;
 }
 
-/* Crosshair guide for placing the acrylic pyramid in the center */
 .pyramid-center-guide {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 96px;
-  height: 96px;
+  width: 84px;
+  height: 84px;
   transform: translate(-50%, -50%);
   border: 1px dashed rgba(0, 242, 254, 0.45);
   border-radius: 12px;
@@ -397,20 +404,21 @@ body.pyramid-active .pyramid-hud {
 
 .pyramid-exit-bar {
   position: absolute;
-  bottom: 18px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   pointer-events: auto;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   background: rgba(8, 4, 18, 0.85);
   border: 1px solid rgba(0, 242, 254, 0.35);
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 999px;
   backdrop-filter: blur(10px);
+  white-space: nowrap;
 }
 
-/* Modals (Love Letter & Pyramid DIY Guide) */
+/* Modals */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -420,7 +428,7 @@ body.pyramid-active .pyramid-hud {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   opacity: 0;
   visibility: hidden;
   transition: all 0.35s ease;
@@ -432,78 +440,206 @@ body.pyramid-active .pyramid-hud {
 }
 
 .modal-card {
-  max-width: 600px;
+  max-width: 580px;
   width: 100%;
-  max-height: 88vh;
+  max-height: 85dvh;
   overflow-y: auto;
   background: linear-gradient(160deg, rgba(25, 10, 45, 0.95) 0%, rgba(10, 4, 22, 0.98) 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-top: 3px solid var(--cyan);
-  border-radius: 22px;
-  padding: 30px;
+  border-radius: 20px;
+  padding: 24px 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.2);
   position: relative;
 }
 
 .modal-close {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 36px;
-  height: 36px;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .modal-title {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2rem;
+  font-size: 1.65rem;
   color: var(--gold);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  padding-right: 32px;
 }
 
 .letter-body {
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: 0.94rem;
+  line-height: 1.65;
   color: rgba(255, 245, 250, 0.92);
   white-space: pre-line;
 }
 
 .letter-sign {
-  margin-top: 22px;
+  margin-top: 18px;
   text-align: right;
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-style: italic;
   color: var(--primary);
 }
 
 .pyramid-diagram {
-  margin: 18px 0;
-  padding: 16px;
+  margin: 14px 0;
+  padding: 14px;
   border-radius: 14px;
   background: rgba(0, 242, 254, 0.06);
   border: 1px dashed rgba(0, 242, 254, 0.35);
   text-align: center;
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.86rem;
+  line-height: 1.55;
 }
 
+/* ============================================================================
+   MOBILE OPTIMIZATION (Phones & In-App Browsers like Zalo / Messenger)
+   ============================================================================ */
 @media (max-width: 768px) {
+  .intro-screen {
+    justify-content: flex-start;
+    padding: 18px 16px 28px;
+  }
+
+  .intro-badge {
+    font-size: 0.65rem;
+    letter-spacing: 1.2px;
+    padding: 5px 12px;
+    margin-top: auto;
+    margin-bottom: 10px;
+  }
+
+  .intro-title {
+    font-size: 1.85rem;
+    margin-bottom: 8px;
+  }
+
+  .intro-subtitle {
+    font-size: 0.84rem;
+    line-height: 1.45;
+    margin-bottom: 14px;
+  }
+
+  /* 2x2 Compact Grid on Mobile so it never pushes the Start button off screen! */
+  .intro-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+    max-width: 340px;
+  }
+
+  .stat-box {
+    padding: 8px 10px;
+    border-radius: 12px;
+  }
+
+  .stat-num {
+    font-size: 1.3rem;
+  }
+
+  .stat-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.8px;
+  }
+
+  .start-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 20px;
+    font-size: 0.92rem;
+    margin-bottom: auto;
+  }
+
+  /* Mobile HUD Top & Controls */
   .hud-layer {
-    padding: 14px;
+    padding: 10px 10px calc(12px + env(safe-area-inset-bottom, 0px));
   }
+
+  .hud-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .brand-panel {
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-tag {
+    font-size: 0.58rem;
+  }
+
   .brand-title {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
+
+  .live-timer {
+    font-size: 0.68rem;
+  }
+
+  .hud-controls {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+
+  .hud-btn {
+    padding: 8px 4px;
+    font-size: 0.72rem;
+    flex-direction: column;
+    gap: 3px;
+    border-radius: 10px;
+  }
+
   .hud-btn span.btn-text {
-    display: none;
+    display: block;
+    font-size: 0.58rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
+
   .cinematic-caption-box {
-    padding: 14px 18px;
+    padding: 10px 14px;
+    border-radius: 14px;
+  }
+
+  .chapter-pill {
+    font-size: 0.6rem;
+    margin-bottom: 2px;
+  }
+
+  .caption-heading {
+    font-size: 1.1rem;
+  }
+
+  .caption-text {
+    font-size: 0.78rem;
+    line-height: 1.38;
+  }
+
+  .timeline-bar {
+    padding: 5px 10px;
+    gap: 6px;
+  }
+
+  .scene-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 0.72rem;
   }
 }
