@@ -1,52 +1,8 @@
 // ============================================================================
-// 3 YEARS ANNIVERSARY — 3D HOLOGRAM CINEMATIC EXPERIENCE (Three.js)
+// 3 YEARS ANNIVERSARY — FULLSCREEN 3D / 4D HOLOGRAM EXPERIENCE (Three.js)
+// No text overlays during 3D/4D motion; heartfelt wishes appear in the final letter
 // ============================================================================
 
-const MEMORIES = [
-  {
-    id: 0,
-    chapter: 'KHỞI ĐẦU • VŨ TRỤ TÌNH YÊU',
-    title: 'Trái Tim Hologram Kỷ Niệm 3 Năm',
-    desc: 'Giữa hàng triệu vì sao trong vũ trụ, thật kỳ diệu khi hai quỹ đạo của chúng mình đã gặp nhau và cùng tỏa sáng suốt 1.095 ngày qua.'
-  },
-  {
-    id: 1,
-    chapter: 'KỶ NIỆM 01 • CUNG ĐƯỜNG BIỂN XANH',
-    title: 'Bầu Trời Xanh & Đôi Mình Ton-sur-ton',
-    desc: 'Dưới nắng vàng rực rỡ và biển xanh mênh mông, cái ôm thật chặt của em làm mọi con đường phía trước đều trở nên tuyệt đẹp.',
-    photoIndex: 0
-  },
-  {
-    id: 2,
-    chapter: 'KỶ NIỆM 02 • NẮNG VÀNG TRÊN CÁT TRẮNG',
-    title: 'Nét Tinh Nghịch Đáng Yêu Của Em',
-    desc: 'Chiếc mũ cói, váy hồng dịu dàng và biểu cảm lè lưỡi siêu cấp đáng yêu của cô gái luôn mang lại tiếng cười cho anh mỗi ngày.',
-    photoIndex: 1
-  },
-  {
-    id: 3,
-    chapter: 'KỶ NIỆM 03 • LỜI HỨA BÊN SÓNG BIỂN',
-    title: 'Bàn Tay Anh Sẽ Luôn Che Chở Cho Em',
-    desc: 'Dù ngoài kia sóng gió thế nào, chỉ cần nhìn thấy nụ cười rạng rỡ này của em, anh biết mình luôn có một bình yên để trở về.',
-    photoIndex: 2
-  },
-  {
-    id: 4,
-    chapter: 'KỶ NIỆM 04 • PHÚT GIÂY ĐỜI THƯỜNG',
-    title: 'Ánh Mắt Trong Veo & Nụ Cười Ấm Áp',
-    desc: 'Chẳng cần đi đâu xa xôi, chính những khoảnh khắc đời thường nhí nhảnh bên nhau lại là mảnh ghép ngọt ngào nhất suốt 3 năm qua.',
-    photoIndex: 3
-  },
-  {
-    id: 5,
-    chapter: 'KỶ NIỆM 05 • ĐỒNG HÀNH MỌI CHẶNG ĐƯỜNG',
-    title: 'Cùng Nhau Băng Qua Mọi Cung Đường',
-    desc: 'Đội mũ bảo hiểm lên và tiếp tục hành trình năm thứ 4, thứ 10 và mãi mãi về sau cùng nhau em nhé! Happy 3rd Anniversary ❤️',
-    photoIndex: 4
-  }
-];
-
-// Fallback paths if EMBEDDED_PHOTOS is not loaded
 const PHOTO_PATHS = [
   'assets/photos/photo1.jpg',
   'assets/photos/photo2.jpg',
@@ -54,6 +10,8 @@ const PHOTO_PATHS = [
   'assets/photos/photo4.jpg',
   'assets/photos/photo5.jpg'
 ];
+
+const TOTAL_SCENES = 6; // 0 = Central 3D Heart Universe, 1..5 = 5 Couple Photos
 
 // ============================================================================
 // ROMANTIC WEB AUDIO SYNTHESIZER (Music Box + Warm Pad)
@@ -64,20 +22,19 @@ class RomanticMusicBox {
     this.isPlaying = false;
     this.intervalId = null;
     this.step = 0;
-    // Romantic chord progression in F Major / D Minor (Canon / Love Story vibe)
     this.melody = [
-      { note: 69, bass: 53, dur: 1.4 }, // A4 over F3
-      { note: 72, bass: 57, dur: 1.4 }, // C5 over A3
-      { note: 76, bass: 60, dur: 1.4 }, // E5 over C4
-      { note: 74, bass: 52, dur: 1.4 }, // D5 over E3
-      { note: 69, bass: 50, dur: 1.4 }, // A4 over D3
-      { note: 72, bass: 53, dur: 1.4 }, // C5 over F3
-      { note: 69, bass: 46, dur: 1.4 }, // A4 over Bb2
-      { note: 67, bass: 53, dur: 1.4 }, // G4 over F3
-      { note: 65, bass: 48, dur: 1.4 }, // F4 over C3
-      { note: 69, bass: 52, dur: 1.4 }, // A4 over E3
-      { note: 72, bass: 55, dur: 1.4 }, // C5 over G3
-      { note: 77, bass: 53, dur: 1.8 }  // F5 over F3
+      { note: 69, bass: 53 },
+      { note: 72, bass: 57 },
+      { note: 76, bass: 60 },
+      { note: 74, bass: 52 },
+      { note: 69, bass: 50 },
+      { note: 72, bass: 53 },
+      { note: 69, bass: 46 },
+      { note: 67, bass: 53 },
+      { note: 65, bass: 48 },
+      { note: 69, bass: 52 },
+      { note: 72, bass: 55 },
+      { note: 77, bass: 53 }
     ];
   }
 
@@ -162,18 +119,18 @@ class RomanticMusicBox {
 // ============================================================================
 const container = document.getElementById('webgl-container');
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x04010a, 0.018);
+scene.fog = new THREE.FogExp2(0x020006, 0.016);
 
 const camera = new THREE.PerspectiveCamera(
-  52,
+  54,
   window.innerWidth / window.innerHeight,
   0.1,
   300
 );
-camera.position.set(0, 6.5, 22);
+camera.position.set(0, 6.0, 22);
 
-// Secondary cameras for 4-Sided Pyramid Hologram mode
-const pyramidCam = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
+// Camera for 4-Sided 4D Pyramid Hologram mode
+const pyramidCam = new THREE.PerspectiveCamera(48, 1, 0.1, 200);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -182,24 +139,24 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.toneMappingExposure = 1.2;
 container.appendChild(renderer.domElement);
 
 // ============================================================================
 // LIGHTING
 // ============================================================================
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
 
-const corePinkLight = new THREE.PointLight(0xff2a85, 3.2, 35);
+const corePinkLight = new THREE.PointLight(0xff2a85, 3.4, 38);
 corePinkLight.position.set(0, 2.5, 0);
 scene.add(corePinkLight);
 
-const cyanBaseLight = new THREE.PointLight(0x00f2fe, 2.6, 30);
+const cyanBaseLight = new THREE.PointLight(0x00f2fe, 2.8, 32);
 cyanBaseLight.position.set(0, -3.5, 0);
 scene.add(cyanBaseLight);
 
-const goldTopLight = new THREE.PointLight(0xffd166, 1.8, 30);
+const goldTopLight = new THREE.PointLight(0xffd166, 2.0, 32);
 goldTopLight.position.set(0, 9, 4);
 scene.add(goldTopLight);
 
@@ -209,20 +166,18 @@ scene.add(goldTopLight);
 const projectorGroup = new THREE.Group();
 scene.add(projectorGroup);
 
-// Futuristic emitter platform at y = -4.2
 const baseGeo = new THREE.CylinderGeometry(4.2, 5.2, 0.45, 64);
 const baseMat = new THREE.MeshStandardMaterial({
   color: 0x0b0518,
   metalness: 0.85,
   roughness: 0.2,
   emissive: 0x00f2fe,
-  emissiveIntensity: 0.25
+  emissiveIntensity: 0.28
 });
 const baseMesh = new THREE.Mesh(baseGeo, baseMat);
 baseMesh.position.y = -4.2;
 projectorGroup.add(baseMesh);
 
-// Glowing concentric hologram rings on the emitter floor
 const holoRings = [];
 const ringRadii = [3.6, 6.5, 9.8, 12.6];
 ringRadii.forEach((radius, idx) => {
@@ -231,7 +186,7 @@ ringRadii.forEach((radius, idx) => {
     color: idx % 2 === 0 ? 0x00f2fe : 0xff2a85,
     side: THREE.DoubleSide,
     transparent: true,
-    opacity: idx === 0 ? 0.85 : 0.4,
+    opacity: idx === 0 ? 0.85 : 0.42,
     blending: THREE.AdditiveBlending
   });
   const ring = new THREE.Mesh(rGeo, rMat);
@@ -241,43 +196,33 @@ ringRadii.forEach((radius, idx) => {
   holoRings.push(ring);
 });
 
-// Hologram Beam Cone (Custom Shader for sci-fi scanlines & volumetric fade)
-const beamVertexShader = `
-  varying vec2 vUv;
-  varying vec3 vPos;
-  void main() {
-    vUv = uv;
-    vPos = position;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
-
-const beamFragmentShader = `
-  uniform float uTime;
-  varying vec2 vUv;
-  varying vec3 vPos;
-  void main() {
-    // Vertical gradient fade from emitter upwards
-    float verticalFade = smoothstep(0.0, 0.2, vUv.y) * (1.0 - smoothstep(0.3, 1.0, vUv.y));
-    // Moving horizontal scanlines
-    float scanline = sin((vUv.y * 80.0) - uTime * 4.5) * 0.5 + 0.5;
-    float pulse = sin(uTime * 2.0) * 0.15 + 0.85;
-    vec3 cyan = vec3(0.0, 0.95, 1.0);
-    vec3 pink = vec3(1.0, 0.16, 0.52);
-    vec3 col = mix(cyan, pink, vUv.y);
-    float alpha = verticalFade * (0.12 + scanline * 0.14) * pulse;
-    gl_FragColor = vec4(col, alpha);
-  }
-`;
-
 const beamUniforms = {
   uTime: { value: 0 }
 };
 
 const beamGeo = new THREE.CylinderGeometry(7.2, 2.8, 11.5, 64, 1, true);
 const beamMat = new THREE.ShaderMaterial({
-  vertexShader: beamVertexShader,
-  fragmentShader: beamFragmentShader,
+  vertexShader: `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform float uTime;
+    varying vec2 vUv;
+    void main() {
+      float verticalFade = smoothstep(0.0, 0.2, vUv.y) * (1.0 - smoothstep(0.3, 1.0, vUv.y));
+      float scanline = sin((vUv.y * 80.0) - uTime * 4.5) * 0.5 + 0.5;
+      float pulse = sin(uTime * 2.0) * 0.15 + 0.85;
+      vec3 cyan = vec3(0.0, 0.95, 1.0);
+      vec3 pink = vec3(1.0, 0.16, 0.52);
+      vec3 col = mix(cyan, pink, vUv.y);
+      float alpha = verticalFade * (0.12 + scanline * 0.14) * pulse;
+      gl_FragColor = vec4(col, alpha);
+    }
+  `,
   uniforms: beamUniforms,
   transparent: true,
   depthWrite: false,
@@ -289,13 +234,12 @@ beamMesh.position.y = 1.6;
 projectorGroup.add(beamMesh);
 
 // ============================================================================
-// CENTRAL 3D HOLOGRAPHIC HEART & PARTICLE SWARM
+// CENTRAL 3D HOLOGRAPHIC HEART
 // ============================================================================
 const centerHeartGroup = new THREE.Group();
 centerHeartGroup.position.set(0, 1.4, 0);
 scene.add(centerHeartGroup);
 
-// Create extruded 3D Heart Shape
 const heartShape = new THREE.Shape();
 const hx = 0, hy = 0;
 heartShape.moveTo(hx, hy + 0.65);
@@ -306,19 +250,16 @@ heartShape.bezierCurveTo(hx + 1.05, hy - 1.25, hx + 1.75, hy - 0.55, hx + 1.75, 
 heartShape.bezierCurveTo(hx + 1.75, hy + 0.15, hx + 1.75, hy + 1.25, hx + 0.85, hy + 1.25);
 heartShape.bezierCurveTo(hx + 0.25, hy + 1.25, hx, hy + 0.65, hx, hy + 0.65);
 
-const extrudeSettings = {
+const heartGeo = new THREE.ExtrudeGeometry(heartShape, {
   depth: 0.45,
   bevelEnabled: true,
   bevelSegments: 6,
   steps: 2,
   bevelSize: 0.22,
   bevelThickness: 0.22
-};
-
-const heartGeo = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+});
 heartGeo.center();
 
-// Hologram Fresnel + Scanline Shader for the Central Heart
 const holoHeartMat = new THREE.ShaderMaterial({
   uniforms: {
     uTime: { value: 0 }
@@ -348,7 +289,7 @@ const holoHeartMat = new THREE.ShaderMaterial({
       vec3 coreColor = vec3(1.0, 0.15, 0.55);
       vec3 rimColor = vec3(0.0, 0.95, 1.0);
       vec3 finalCol = mix(coreColor, rimColor, fresnel * 0.75) + vec3(scan * 0.18);
-      float alpha = 0.55 + fresnel * 0.45;
+      float alpha = 0.58 + fresnel * 0.42;
       gl_FragColor = vec4(finalCol, alpha);
     }
   `,
@@ -361,45 +302,42 @@ const heartMesh = new THREE.Mesh(heartGeo, holoHeartMat);
 heartMesh.scale.set(0.95, 0.95, 0.95);
 centerHeartGroup.add(heartMesh);
 
-// Wireframe cage around the heart for true hologram feel
 const wireHeartMat = new THREE.MeshBasicMaterial({
   color: 0xff85c0,
   wireframe: true,
   transparent: true,
-  opacity: 0.22,
+  opacity: 0.24,
   blending: THREE.AdditiveBlending
 });
 const wireHeartMesh = new THREE.Mesh(heartGeo, wireHeartMat);
 wireHeartMesh.scale.set(1.03, 1.03, 1.03);
 centerHeartGroup.add(wireHeartMesh);
 
-// Floating "3 YEARS" Orbital Rings around the Central Heart
 const orbitRing1 = new THREE.Mesh(
-  new THREE.TorusGeometry(2.55, 0.025, 16, 100),
-  new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.7 })
+  new THREE.TorusGeometry(2.55, 0.03, 16, 100),
+  new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.75 })
 );
 orbitRing1.rotation.x = Math.PI / 3;
 centerHeartGroup.add(orbitRing1);
 
 const orbitRing2 = new THREE.Mesh(
-  new THREE.TorusGeometry(2.9, 0.02, 16, 100),
-  new THREE.MeshBasicMaterial({ color: 0xffd166, transparent: true, opacity: 0.55 })
+  new THREE.TorusGeometry(2.9, 0.025, 16, 100),
+  new THREE.MeshBasicMaterial({ color: 0xffd166, transparent: true, opacity: 0.6 })
 );
 orbitRing2.rotation.y = Math.PI / 4;
 orbitRing2.rotation.x = -Math.PI / 3;
 centerHeartGroup.add(orbitRing2);
 
 // ============================================================================
-// FLOATING 3D HOLOGRAM PHOTO FRAMES (5 COUPLE PHOTOS)
+// FLOATING 3D HOLOGRAM PHOTO FRAMES (PURE VISUALS, NO TEXT LABELS)
 // ============================================================================
 const photoFramesGroup = new THREE.Group();
 scene.add(photoFramesGroup);
 
 const photoMeshes = [];
 const frameAnchors = [];
-const RING_RADIUS = 9.4;
+const RING_RADIUS = 8.2;
 
-// Create a soft circular glow texture for particles
 function createGlowTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 64;
@@ -407,43 +345,12 @@ function createGlowTexture() {
   const ctx = canvas.getContext('2d');
   const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
   grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  grad.addColorStop(0.35, 'rgba(255, 110, 199, 0.8)');
-  grad.addColorStop(0.7, 'rgba(0, 242, 254, 0.3)');
+  grad.addColorStop(0.35, 'rgba(255, 110, 199, 0.85)');
+  grad.addColorStop(0.7, 'rgba(0, 242, 254, 0.35)');
   grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 64, 64);
   return new THREE.CanvasTexture(canvas);
-}
-
-// Create a floating label plate above each photo frame
-function createHoloBadgeTexture(textTop, textMain) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 128;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, 512, 128);
-
-  // Glowing pill background
-  ctx.fillStyle = 'rgba(8, 18, 38, 0.72)';
-  ctx.strokeStyle = '#00f2fe';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.roundRect(16, 16, 480, 96, 48);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = '#00f2fe';
-  ctx.font = '600 20px Montserrat, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText(textTop, 256, 52);
-
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 28px Georgia, serif';
-  ctx.fillText(textMain, 256, 90);
-
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.needsUpdate = true;
-  return tex;
 }
 
 const textureLoader = new THREE.TextureLoader();
@@ -458,18 +365,16 @@ photoSources.forEach((src, index) => {
   const z = Math.cos(angle) * RING_RADIUS;
 
   const frameHolder = new THREE.Group();
-  frameHolder.position.set(x, 1.35, z);
-  // Make each frame face outward from the center so the camera can fly in front of it
+  frameHolder.position.set(x, 1.4, z);
   frameHolder.rotation.y = angle;
   photoFramesGroup.add(frameHolder);
 
-  // Load couple photo texture
   const tex = textureLoader.load(src);
   tex.encoding = THREE.sRGBEncoding;
 
-  // Main Photo Card (vertical portrait ratio matching the uploaded photos)
-  const cardWidth = 3.15;
-  const cardHeight = 4.25;
+  // Couple Photo Plane (Larger & vivid for full-screen mobile & 4D reflection)
+  const cardWidth = 3.5;
+  const cardHeight = 4.65;
   const photoGeo = new THREE.PlaneGeometry(cardWidth, cardHeight);
   const photoMat = new THREE.MeshBasicMaterial({
     map: tex,
@@ -481,7 +386,7 @@ photoSources.forEach((src, index) => {
   photoMeshes.push(photoMesh);
 
   // Outer Neon Hologram Glass Border
-  const borderGeo = new THREE.PlaneGeometry(cardWidth + 0.28, cardHeight + 0.28);
+  const borderGeo = new THREE.PlaneGeometry(cardWidth + 0.32, cardHeight + 0.32);
   const borderMat = new THREE.ShaderMaterial({
     uniforms: {
       uTime: beamUniforms.uTime,
@@ -506,7 +411,7 @@ photoSources.forEach((src, index) => {
         vec3 cyan = vec3(0.0, 0.95, 1.0);
         vec3 pink = vec3(1.0, 0.16, 0.52);
         vec3 col = mix(cyan, pink, wave);
-        gl_FragColor = vec4(col, glow * 0.9);
+        gl_FragColor = vec4(col, glow * 0.95);
       }
     `,
     transparent: true,
@@ -518,40 +423,24 @@ photoSources.forEach((src, index) => {
   borderMesh.position.z = -0.02;
   frameHolder.add(borderMesh);
 
-  // Corner Holo Brackets
-  const pedestalRingGeo = new THREE.RingGeometry(1.4, 1.55, 48);
+  // Holographic Energy Ring under each photo
+  const pedestalRingGeo = new THREE.RingGeometry(1.5, 1.68, 48);
   const pedestalRingMat = new THREE.MeshBasicMaterial({
     color: index % 2 === 0 ? 0x00f2fe : 0xff2a85,
     side: THREE.DoubleSide,
     transparent: true,
-    opacity: 0.65,
+    opacity: 0.7,
     blending: THREE.AdditiveBlending
   });
   const pedRing = new THREE.Mesh(pedestalRingGeo, pedestalRingMat);
   pedRing.rotation.x = Math.PI / 2;
-  pedRing.position.y = -2.45;
+  pedRing.position.y = -2.65;
   frameHolder.add(pedRing);
-
-  // Floating Header Badge above each photo
-  const memoryInfo = MEMORIES[index + 1];
-  const badgeTex = createHoloBadgeTexture(
-    `MEMORY 0${index + 1} • 3 YEARS`,
-    memoryInfo.title.slice(0, 26)
-  );
-  const badgeGeo = new THREE.PlaneGeometry(2.8, 0.7);
-  const badgeMat = new THREE.MeshBasicMaterial({
-    map: badgeTex,
-    transparent: true,
-    side: THREE.DoubleSide
-  });
-  const badgeMesh = new THREE.Mesh(badgeGeo, badgeMat);
-  badgeMesh.position.set(0, cardHeight / 2 + 0.62, 0.05);
-  frameHolder.add(badgeMesh);
 
   frameAnchors.push({
     group: frameHolder,
     angle,
-    baseY: 1.35
+    baseY: 1.4
   });
 });
 
@@ -573,7 +462,7 @@ const colorPalette = [
 ];
 
 for (let i = 0; i < particleCount; i++) {
-  const r = 2.0 + Math.random() * 34.0;
+  const r = 2.0 + Math.random() * 32.0;
   const theta = Math.random() * Math.PI * 2;
   pPositions[i * 3] = Math.cos(theta) * r;
   pPositions[i * 3 + 1] = (Math.random() - 0.3) * 24;
@@ -584,18 +473,18 @@ for (let i = 0; i < particleCount; i++) {
   pColors[i * 3 + 1] = c.g;
   pColors[i * 3 + 2] = c.b;
 
-  pSpeeds[i] = 0.4 + Math.random() * 1.2;
+  pSpeeds[i] = 0.45 + Math.random() * 1.25;
 }
 
 pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
 pGeo.setAttribute('color', new THREE.BufferAttribute(pColors, 3));
 
 const pMat = new THREE.PointsMaterial({
-  size: 0.34,
+  size: 0.36,
   map: glowTex,
   vertexColors: true,
   transparent: true,
-  opacity: 0.85,
+  opacity: 0.88,
   depthWrite: false,
   blending: THREE.AdditiveBlending
 });
@@ -604,87 +493,71 @@ const particleSystem = new THREE.Points(pGeo, pMat);
 scene.add(particleSystem);
 
 // ============================================================================
-// CINEMATIC CAMERA DIRECTOR & ORBIT INTERACTION
+// CINEMATIC CAMERA DIRECTOR & AUTOMATIC FINAL LOVE LETTER REVEAL
 // ============================================================================
 let currentSceneIndex = 0; // 0 = overview, 1..5 = couple photos
 let autoPlay = true;
 let autoPlayTimer = 0;
-const SCENE_DURATION = 7.5; // seconds per photo in movie mode
+const SCENE_DURATION = 5.5; // seconds per photo before transitioning
 let isPyramidMode = false;
+let hasShownFinalLetter = false;
+let visitedAllPhotos = false;
 
-const targetCameraPos = new THREE.Vector3(0, 6.2, 21.5);
+const targetCameraPos = new THREE.Vector3(0, 5.5, 20);
 const targetLookAt = new THREE.Vector3(0, 1.4, 0);
 const currentLookAt = new THREE.Vector3(0, 1.4, 0);
 
-// User manual drag offset
 let isDragging = false;
 let prevPointer = { x: 0, y: 0 };
 let userYawOffset = 0;
 let userPitchOffset = 0;
+
+function openFinalLetter() {
+  document.getElementById('letterModal').classList.add('open');
+}
 
 function setScene(index) {
   currentSceneIndex = index;
   autoPlayTimer = 0;
   userYawOffset = 0;
   userPitchOffset = 0;
-
-  // Update UI Timeline Dots
-  document.querySelectorAll('.scene-dot').forEach((btn) => {
-    const idx = parseInt(btn.getAttribute('data-scene'), 10);
-    btn.classList.toggle('active', idx === index);
-  });
-
-  // Update Story Caption
-  const info = MEMORIES[index] || MEMORIES[0];
-  const captionBox = document.getElementById('captionBox');
-  captionBox.style.transform = 'translateY(8px)';
-  captionBox.style.opacity = '0.4';
-
-  setTimeout(() => {
-    document.getElementById('sceneChapter').textContent = info.chapter;
-    document.getElementById('sceneTitle').textContent = info.title;
-    document.getElementById('sceneDesc').textContent = info.desc;
-    captionBox.style.transform = 'translateY(0)';
-    captionBox.style.opacity = '1';
-  }, 180);
 }
 
 function computeCameraTargets(elapsedTime) {
   const isPortrait = window.innerWidth < window.innerHeight;
   if (currentSceneIndex === 0) {
-    // Slow cinematic orbit around the entire 3D universe
-    const orbitAngle = elapsedTime * 0.18 + userYawOffset;
-    const radius = isPortrait ? 27.0 : 20.5;
+    const orbitAngle = elapsedTime * 0.22 + userYawOffset;
+    const radius = isPortrait ? 22.0 : 17.5;
     targetCameraPos.set(
       Math.sin(orbitAngle) * radius,
-      (isPortrait ? 6.2 : 5.2) + Math.sin(elapsedTime * 0.4) * 1.2 + userPitchOffset * 4,
+      (isPortrait ? 5.2 : 4.5) + Math.sin(elapsedTime * 0.45) * 1.1 + userPitchOffset * 4,
       Math.cos(orbitAngle) * radius
     );
-    targetLookAt.set(0, 1.3, 0);
+    targetLookAt.set(0, 1.4, 0);
   } else {
-    // Fly directly in front of the selected couple photo frame
     const anchor = frameAnchors[currentSceneIndex - 1];
     if (anchor) {
       const worldAngle = anchor.angle + photoFramesGroup.rotation.y + userYawOffset * 0.5;
-      const camDist = isPortrait ? RING_RADIUS + 8.6 : RING_RADIUS + 5.6;
-      const subtleSway = Math.sin(elapsedTime * 0.9) * 0.35;
+      // Close, full-screen framing for each photo
+      const camDist = isPortrait ? RING_RADIUS + 7.2 : RING_RADIUS + 5.0;
+      const subtleSway = Math.sin(elapsedTime * 0.9) * 0.3;
 
       targetCameraPos.set(
         Math.sin(worldAngle + subtleSway * 0.04) * camDist,
-        anchor.baseY + (isPortrait ? 0.05 : 0.15) + userPitchOffset * 2.5,
+        anchor.baseY + userPitchOffset * 2.5,
         Math.cos(worldAngle + subtleSway * 0.04) * camDist
       );
 
       targetLookAt.set(
         Math.sin(anchor.angle + photoFramesGroup.rotation.y) * RING_RADIUS,
-        anchor.baseY + (isPortrait ? 0.0 : 0.1),
+        anchor.baseY,
         Math.cos(anchor.angle + photoFramesGroup.rotation.y) * RING_RADIUS
       );
     }
   }
 }
 
-// Pointer drag & click raycasting on 3D photos
+// Touch / Pointer drag & tap-to-focus on photos
 const raycaster = new THREE.Raycaster();
 const pointerNDC = new THREE.Vector2();
 
@@ -705,8 +578,7 @@ window.addEventListener('pointermove', (e) => {
   userPitchOffset = Math.max(-0.8, Math.min(0.8, userPitchOffset + dy * 0.004));
 });
 
-window.addEventListener('pointerup', (e) => {
-  if (!isDragging) return;
+window.addEventListener('pointerup', () => {
   isDragging = false;
 });
 
@@ -725,14 +597,15 @@ window.addEventListener('click', (e) => {
 });
 
 // ============================================================================
-// 4-SIDED PYRAMID HOLOGRAM RENDERER (TOP, BOTTOM, LEFT, RIGHT VIEWPORTS)
+// 4-SIDED 4D PYRAMID HOLOGRAM RENDERER (MAXIMIZED FOR MOBILE FULLSCREEN)
 // ============================================================================
 function renderPyramidHologramMode() {
   const w = window.innerWidth;
   const h = window.innerHeight;
   const minDim = Math.min(w, h);
-  const quadSize = Math.floor(minDim * 0.34);
-  const centerGap = Math.floor(minDim * 0.11); // Space in the middle for the pyramid apex
+  // Maximize each of the 4 hologram quadrants to fill the full screen width/height
+  const quadSize = Math.floor(minDim * 0.43);
+  const centerGap = Math.floor(minDim * 0.045);
 
   const cx = Math.floor(w / 2);
   const cy = Math.floor(h / 2);
@@ -743,38 +616,36 @@ function renderPyramidHologramMode() {
   renderer.setScissor(0, 0, w, h);
   renderer.clear();
 
-  // Hide background fog & floor projector rings so only the pure hologram floats in black space
+  // Pure black void background for crisp reflection on acrylic pyramid
   projectorGroup.visible = false;
 
-  // Focus on either the central heart + active photo or cycle smoothly
   const lookTarget = new THREE.Vector3(0, 1.4, 0);
-  const camRadius = 15.5;
+  const camRadius = 13.2;
 
-  // 4 quadrants around the center crosshair: Top, Bottom, Left, Right
   const views = [
     {
-      // TOP quadrant (upside down relative to screen so it reflects right-side up)
+      // TOP
       x: cx - Math.floor(quadSize / 2),
       y: cy + centerGap,
       up: [0, -1, 0],
       angleOffset: 0
     },
     {
-      // BOTTOM quadrant
+      // BOTTOM
       x: cx - Math.floor(quadSize / 2),
       y: cy - centerGap - quadSize,
       up: [0, 1, 0],
       angleOffset: Math.PI
     },
     {
-      // LEFT quadrant
+      // LEFT
       x: cx - centerGap - quadSize,
       y: cy - Math.floor(quadSize / 2),
       up: [1, 0, 0],
       angleOffset: -Math.PI / 2
     },
     {
-      // RIGHT quadrant
+      // RIGHT
       x: cx + centerGap,
       y: cy - Math.floor(quadSize / 2),
       up: [-1, 0, 0],
@@ -814,33 +685,30 @@ function animate() {
   const delta = clock.getDelta();
   const elapsed = clock.getElapsedTime();
 
-  // Update Hologram Shaders
   beamUniforms.uTime.value = elapsed;
   holoHeartMat.uniforms.uTime.value = elapsed;
 
-  // Pulse and rotate Central 3D Heart
+  // Heartbeat pulse
   const heartBeat = 0.95 + Math.sin(elapsed * 4.2) * 0.06 + Math.pow(Math.sin(elapsed * 2.1), 6) * 0.08;
   heartMesh.scale.set(heartBeat, heartBeat, heartBeat);
   centerHeartGroup.rotation.y = elapsed * 0.65;
   orbitRing1.rotation.z = elapsed * 0.8;
   orbitRing2.rotation.x = elapsed * 0.6;
 
-  // Gently rotate the hologram rings on the floor
   holoRings.forEach((r, idx) => {
     r.rotation.z = elapsed * (idx % 2 === 0 ? 0.3 : -0.25);
   });
 
-  // Rotate photo carousel slowly when in overview or Pyramid Mode
+  // Rotate photo ring in overview or 4D Pyramid Mode
   if (currentSceneIndex === 0 || isPyramidMode) {
-    photoFramesGroup.rotation.y += delta * 0.22;
+    photoFramesGroup.rotation.y += delta * 0.28;
   }
 
-  // Float individual photo frames up and down smoothly
   frameAnchors.forEach((item, idx) => {
     item.group.position.y = item.baseY + Math.sin(elapsed * 1.8 + idx * 1.2) * 0.22;
   });
 
-  // Animate rising hologram particles
+  // Rising hologram particles
   const posAttr = pGeo.attributes.position;
   for (let i = 0; i < particleCount; i++) {
     let py = posAttr.getY(i);
@@ -851,22 +719,34 @@ function animate() {
   posAttr.needsUpdate = true;
   particleSystem.rotation.y = elapsed * 0.05;
 
-  // Auto-play Director progression
+  // Auto-play progression through the 5 photos, then automatically reveal the Final Love Letter!
   if (autoPlay && !isPyramidMode) {
     autoPlayTimer += delta;
     if (autoPlayTimer >= SCENE_DURATION) {
-      const nextScene = (currentSceneIndex + 1) % MEMORIES.length;
-      setScene(nextScene);
+      if (currentSceneIndex < 5) {
+        setScene(currentSceneIndex + 1);
+        if (currentSceneIndex === 5) {
+          visitedAllPhotos = true;
+        }
+      } else {
+        // Finished showing Photo 5 -> Return to Central Heart and open the Final Love Letter!
+        setScene(0);
+        if (visitedAllPhotos && !hasShownFinalLetter) {
+          hasShownFinalLetter = true;
+          setTimeout(() => {
+            openFinalLetter();
+          }, 1800);
+        }
+      }
     }
   }
 
-  // Render either 4-Sided Pyramid Mode or Fullscreen Cinematic Mode
   if (isPyramidMode) {
     renderPyramidHologramMode();
   } else {
     computeCameraTargets(elapsed);
-    camera.position.lerp(targetCameraPos, 0.045);
-    currentLookAt.lerp(targetLookAt, 0.06);
+    camera.position.lerp(targetCameraPos, 0.048);
+    currentLookAt.lerp(targetLookAt, 0.065);
     camera.lookAt(currentLookAt);
 
     renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
@@ -877,75 +757,122 @@ function animate() {
 animate();
 
 // ============================================================================
-// UI EVENT LISTENERS & LIVE COUNTER
+// FULLSCREEN HELPER & UI CONTROLS
 // ============================================================================
 const musicBox = new RomanticMusicBox();
 
-const introScreen = document.getElementById('introScreen');
-const startBtn = document.getElementById('startExperienceBtn');
-const btnAutoPlay = document.getElementById('btnAutoPlay');
-const btnPyramidMode = document.getElementById('btnPyramidMode');
-const btnExitPyramid = document.getElementById('btnExitPyramid');
-const btnToggleCrosshair = document.getElementById('btnToggleCrosshair');
-const btnAudio = document.getElementById('btnAudio');
-const btnLoveLetter = document.getElementById('btnLoveLetter');
-const btnPyramidGuide = document.getElementById('btnPyramidGuide');
-const btnActivatePyramidFromGuide = document.getElementById('btnActivatePyramidFromGuide');
+function triggerFullscreen() {
+  const docEl = document.documentElement;
+  const requestFs =
+    docEl.requestFullscreen ||
+    docEl.webkitRequestFullscreen ||
+    docEl.mozRequestFullScreen ||
+    docEl.msRequestFullscreen;
+  if (requestFs && !document.fullscreenElement && !document.webkitFullscreenElement) {
+    requestFs.call(docEl).catch(() => {});
+  }
+}
 
-startBtn.addEventListener('click', () => {
-  introScreen.classList.add('hidden');
-  musicBox.start();
-  setScene(1); // Fly directly into the first couple photo after intro!
-});
-
-btnAutoPlay.addEventListener('click', () => {
-  autoPlay = !autoPlay;
-  btnAutoPlay.classList.toggle('active', autoPlay);
-  btnAutoPlay.querySelector('.btn-text').textContent = autoPlay
-    ? 'Đạo Diễn 3D: BẬT'
-    : 'Đạo Diễn 3D: TẮT';
-});
+function toggleFullscreen() {
+  const docEl = document.documentElement;
+  const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+  if (!isFs) {
+    triggerFullscreen();
+  } else {
+    const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+    if (exitFs) exitFs.call(document).catch(() => {});
+  }
+}
 
 function setPyramidMode(active) {
   isPyramidMode = active;
   document.body.classList.toggle('pyramid-active', active);
 }
 
-btnPyramidMode.addEventListener('click', () => setPyramidMode(true));
-btnExitPyramid.addEventListener('click', () => setPyramidMode(false));
+const introScreen = document.getElementById('introScreen');
+const startExperienceBtn = document.getElementById('startExperienceBtn');
+const start4DBtn = document.getElementById('start4DBtn');
+const btnAutoPlay = document.getElementById('btnAutoPlay');
+const btnPyramidMode = document.getElementById('btnPyramidMode');
+const btnExitPyramid = document.getElementById('btnExitPyramid');
+const btnToggleCrosshair = document.getElementById('btnToggleCrosshair');
+const btnOpenLetterFrom4D = document.getElementById('btnOpenLetterFrom4D');
+const btnAudio = document.getElementById('btnAudio');
+const btnFullscreen = document.getElementById('btnFullscreen');
+const btnLoveLetter = document.getElementById('btnLoveLetter');
+const btnReplay3D = document.getElementById('btnReplay3D');
+const btnSwitchTo4D = document.getElementById('btnSwitchTo4D');
+
+// Start in 3D Fullscreen Movie Mode
+startExperienceBtn.addEventListener('click', () => {
+  triggerFullscreen();
+  introScreen.classList.add('hidden');
+  musicBox.start();
+  setPyramidMode(false);
+  hasShownFinalLetter = false;
+  visitedAllPhotos = false;
+  setScene(1);
+});
+
+// Start directly in 4D Pyramid Hologram Mode
+start4DBtn.addEventListener('click', () => {
+  triggerFullscreen();
+  introScreen.classList.add('hidden');
+  musicBox.start();
+  setPyramidMode(true);
+});
+
+btnAutoPlay.addEventListener('click', () => {
+  autoPlay = !autoPlay;
+  btnAutoPlay.classList.toggle('active', autoPlay);
+});
+
+btnPyramidMode.addEventListener('click', () => {
+  triggerFullscreen();
+  setPyramidMode(true);
+});
+
+btnExitPyramid.addEventListener('click', () => {
+  setPyramidMode(false);
+});
 
 btnToggleCrosshair.addEventListener('click', () => {
   const cross = document.getElementById('pyramidGuideCross');
-  cross.style.opacity = cross.style.opacity === '0' ? '1' : '0';
+  const hidden = cross.style.opacity === '0';
+  cross.style.opacity = hidden ? '1' : '0';
+  btnToggleCrosshair.textContent = hidden ? 'Ẩn Tâm' : 'Hiện Tâm';
+});
+
+btnOpenLetterFrom4D.addEventListener('click', () => {
+  openFinalLetter();
 });
 
 btnAudio.addEventListener('click', () => {
   const playing = musicBox.toggle();
   btnAudio.classList.toggle('active', playing);
-  btnAudio.querySelector('.btn-text').textContent = playing
-    ? 'Nhạc Nền: BẬT'
-    : 'Nhạc Nền: TẮT';
 });
 
-// Timeline buttons
-document.querySelectorAll('.scene-dot').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const idx = parseInt(btn.getAttribute('data-scene'), 10);
-    setScene(idx);
-  });
+btnFullscreen.addEventListener('click', () => {
+  toggleFullscreen();
 });
 
-// Modals
 btnLoveLetter.addEventListener('click', () => {
-  document.getElementById('letterModal').classList.add('open');
+  openFinalLetter();
 });
 
-btnPyramidGuide.addEventListener('click', () => {
-  document.getElementById('guideModal').classList.add('open');
+btnReplay3D.addEventListener('click', () => {
+  document.getElementById('letterModal').classList.remove('open');
+  setPyramidMode(false);
+  hasShownFinalLetter = false;
+  visitedAllPhotos = false;
+  autoPlay = true;
+  btnAutoPlay.classList.add('active');
+  setScene(1);
 });
 
-btnActivatePyramidFromGuide.addEventListener('click', () => {
-  document.getElementById('guideModal').classList.remove('open');
+btnSwitchTo4D.addEventListener('click', () => {
+  document.getElementById('letterModal').classList.remove('open');
+  triggerFullscreen();
   setPyramidMode(true);
 });
 
@@ -956,19 +883,6 @@ document.querySelectorAll('.modal-close').forEach((btn) => {
   });
 });
 
-// Live 3-Year Second Counter
-let extraSeconds = 0;
-setInterval(() => {
-  extraSeconds++;
-  const totalSeconds = 1095 * 86400 + extraSeconds;
-  const formattedSec = totalSeconds.toLocaleString('vi-VN');
-  const el = document.getElementById('liveCounter');
-  if (el) {
-    el.textContent = `3 Năm • 1.095 Ngày • ${formattedSec} Giây Yêu Thương`;
-  }
-}, 1000);
-
-// Responsive resize
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
