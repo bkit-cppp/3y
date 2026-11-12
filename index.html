@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Kỷ Niệm 3 Năm Yêu Nhau — 3D Hologram Love Story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Three.js WebGL Canvas Container -->
+  <div id="webgl-container"></div>
+
+  <!-- Subtle Scanline & Vignette Overlay -->
+  <div class="hologram-overlay"></div>
+
+  <!-- Intro Splash Screen -->
+  <section class="intro-screen" id="introScreen">
+    <div class="intro-badge">✦ HOLOGRAM 3D EXPERIENCE • 3 YEARS ANNIVERSARY ✦</div>
+    <h1 class="intro-title">Ba Năm — Một Hành Trình<br/>Vạn Khoảnh Khắc Bên Nhau</h1>
+    <p class="intro-subtitle">
+      Một thước phim không gian 3D &amp; lăng kính Hologram lưu giữ những nụ cười, những chuyến đi biển đầy nắng và thanh xuân rực rỡ của hai đứa mình.
+    </p>
+
+    <div class="intro-stats">
+      <div class="stat-box">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Năm Yêu Thương</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">36</div>
+        <div class="stat-label">Tháng Đồng Hành</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1.095+</div>
+        <div class="stat-label">Ngày Hạnh Phúc</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Tương Lai Phía Trước</div>
+      </div>
+    </div>
+
+    <button class="start-btn" id="startExperienceBtn">
+      ▶ Khởi Chiếu Thước Phim 3D
+    </button>
+  </section>
+
+  <!-- Normal 3D Movie HUD -->
+  <div class="hud-layer" id="hudLayer">
+    <div class="hud-top">
+      <div class="brand-panel">
+        <div class="brand-tag">● HOLO-PROJECTOR ACTIVE</div>
+        <div class="brand-title">Happy 3rd Anniversary ❤️</div>
+        <div class="live-timer" id="liveCounter">1095 Ngày • 26,280 Giờ • 1,576,800 Phút Bên Nhau</div>
+      </div>
+
+      <div class="hud-controls">
+        <button class="hud-btn active" id="btnAutoPlay" title="Tự động chuyển cảnh điện ảnh">
+          <span>🎬</span> <span class="btn-text">Đạo Diễn 3D: BẬT</span>
+        </button>
+        <button class="hud-btn cyan-btn" id="btnPyramidMode" title="Bật chế độ chiếu lăng kính Hologram 4 mặt">
+          <span>💎</span> <span class="btn-text">Chiếu Hologram 4 Mặt</span>
+        </button>
+        <button class="hud-btn" id="btnAudio" title="Bật / Tắt giai điệu Piano lãng mạn">
+          <span>🎵</span> <span class="btn-text">Nhạc Nền: BẬT</span>
+        </button>
+        <button class="hud-btn" id="btnLoveLetter" title="Mở bức thư kỷ niệm 3 năm">
+          <span>💌</span> <span class="btn-text">Thư Tình 3 Năm</span>
+        </button>
+        <button class="hud-btn" id="btnPyramidGuide" title="Hướng dẫn đặt lăng kính chiếu Hologram">
+          <span>📐</span> <span class="btn-text">Cách Chiếu Hologram</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="hud-bottom">
+      <div class="cinematic-caption-box" id="captionBox">
+        <span class="chapter-pill" id="sceneChapter">KHỞI ĐẦU • VŨ TRỤ TÌNH YÊU</span>
+        <h2 class="caption-heading" id="sceneTitle">Trái Tim Hologram 3 Năm</h2>
+        <p class="caption-text" id="sceneDesc">
+          Giữa hàng triệu vì sao trong vũ trụ, thật kỳ diệu khi hai quỹ đạo của chúng mình đã gặp nhau và cùng tỏa sáng suốt 1.095 ngày qua.
+        </p>
+      </div>
+
+      <div class="timeline-bar" id="timelineBar">
+        <button class="scene-dot active" data-scene="0" title="Toàn cảnh Vũ trụ Trái tim">♥</button>
+        <button class="scene-dot" data-scene="1" title="Kỷ niệm 1: Cung đường biển xanh">1</button>
+        <button class="scene-dot" data-scene="2" title="Kỷ niệm 2: Nắng vàng & Nụ cười">2</button>
+        <button class="scene-dot" data-scene="3" title="Kỷ niệm 3: Luôn che chở cho em">3</button>
+        <button class="scene-dot" data-scene="4" title="Kỷ niệm 4: Phút giây tinh nghịch">4</button>
+        <button class="scene-dot" data-scene="5" title="Kỷ niệm 5: Đồng hành mọi chặng đường">5</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-Sided Pyramid Hologram HUD (Visible only in Pyramid Mode) -->
+  <div class="pyramid-hud" id="pyramidHud">
+    <div class="pyramid-center-guide" id="pyramidGuideCross">
+      <div class="pyramid-center-dot"></div>
+    </div>
+    <div class="pyramid-exit-bar">
+      <button class="hud-btn cyan-btn" id="btnToggleCrosshair">Ẩn/Hiện Tâm Đặt Kính</button>
+      <button class="hud-btn" id="btnExitPyramid">✕ Thoát Chế Độ Lăng Kính</button>
+    </div>
+  </div>
+
+  <!-- Modal 1: Love Letter -->
+  <div class="modal-backdrop" id="letterModal">
+    <div class="modal-card">
+      <button class="modal-close" data-close="letterModal">✕</button>
+      <h3 class="modal-title">Gửi Người Thương Của Anh — Kỷ Niệm 3 Năm ❤️</h3>
+      <div class="letter-body">
+Vậy là chúng mình đã cùng nhau đi qua 3 năm — 36 tháng — hơn 1.095 ngày với biết bao kỷ niệm đáng nhớ.
+
+Nhìn lại từng bức ảnh của hai đứa: từ những cung đường biển ngập tràn nắng gió nơi mình diện đồ đôi xanh biếc, những buổi chiều dạo bước trên cát trắng nghe tiếng sóng vỗ, cho đến những phút giây đời thường nhí nhảnh hay khi cùng đội mũ bảo hiểm rong ruổi khắp nơi... mỗi khoảnh khắc bên em đều là một thước phim quý giá nhất trong thanh xuân của anh.
+
+Cảm ơn em vì nụ cười tỏa nắng, sự dịu dàng và cả những nét đáng yêu luôn làm trái tim anh rung động như ngày đầu tiên. Chặng đường 3 năm qua chỉ mới là chương mở đầu, anh mong rằng ở năm thứ 4, thứ 10 và mãi về sau, người nắm tay anh đi khắp thế gian vẫn luôn là em!
+      </div>
+      <div class="letter-sign">Yêu em thật nhiều — Happy 3rd Anniversary! ♥</div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Pyramid Hologram Guide -->
+  <div class="modal-backdrop" id="guideModal">
+    <div class="modal-card">
+      <button class="modal-close" data-close="guideModal">✕</button>
+      <h3 class="modal-title">💎 Cách Chiếu Hologram 3D Lơ Lửng Ngoài Đời Thật</h3>
+      <div class="letter-body">
+Trang web này được tích hợp sẵn <strong>2 chế độ trình chiếu</strong>:
+1. <strong>Chế độ Điện Ảnh 3D (Mặc định):</strong> Xem trực tiếp trên màn hình máy tính / điện thoại với hiệu ứng tia sáng Hologram, hạt ngân hà và máy quay bay lượn tự động qua 5 bức ảnh của hai bạn.
+2. <strong>Chế độ Lăng Kính Hologram 4 Mặt (💎 Chiếu Hologram 4 Mặt):</strong> Dùng cho điện thoại hoặc iPad đặt nằm ngửa trong phòng tối.
+      </div>
+      <div class="pyramid-diagram">
+        <strong>📐 Kích thước cắt bìa nhựa trong suốt (4 mảnh hình thang cân):</strong><br/>
+        • Đáy nhỏ (trên): <strong>1.5 cm</strong><br/>
+        • Đáy lớn (dưới): <strong>9 cm</strong><br/>
+        • Chiều cao cạnh: <strong>5.5 cm</strong><br/>
+        <em>Dán băng dính trong suốt ghép 4 mảnh lại thành hình chóp cụt, đặt úp đỉnh nhỏ vào đúng tâm chữ thập trên màn hình điện thoại trong phòng tối — bạn sẽ thấy trái tim 3D và ảnh kỷ niệm của hai bạn lơ lửng giữa không trung!</em>
+      </div>
+      <div style="text-align: center; margin-top: 16px;">
+        <button class="start-btn" id="btnActivatePyramidFromGuide" style="padding: 12px 28px; font-size: 0.9rem;">
+          Bật Ngay Chế Độ Chiếu 4 Mặt
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Embedded Base64 Photos (so WebGL textures work even on file:// without CORS) -->
+  <script src="photos-data.js"></script>
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Main Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
